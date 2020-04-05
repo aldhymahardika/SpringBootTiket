@@ -37,7 +37,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public String insert(Pelanggan pelanggan, String username, String password) throws Exception {
+	public Pelanggan insert(Pelanggan pelanggan, String username, String password) throws Exception {
 		try {
 			if (loginService.findByUsernameAndPassword(username, password) == false) {
 				return null;
@@ -75,6 +75,20 @@ public class PelangganServiceImpl implements PelangganService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	@Override
+	public int updateJpa(long id, String nama, String username, String password) throws Exception {
+		try {
+			if (loginService.findByUsernameAndPassword(username, password) == false) {
+				return 0;
+			} else {
+				return pelangganDao.updateJpa(id, nama);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 }

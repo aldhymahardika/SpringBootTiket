@@ -58,7 +58,7 @@ public class DiskonController extends BaseController {
 	}
 
 	@PostMapping("/diskon/update")
-	public ResponseEntity<?> getUpdateDiskon(@RequestParam("diskonId") long id, @RequestParam("diskon") int diskon,
+	public ResponseEntity<?> getUpdateDiskon(@RequestParam("diskonId") long id, @RequestParam("diskon") float diskon,
 			@RequestHeader("Authorization") String user) {
 		try {
 			String[] auth = authUser(user).split(":");
@@ -70,6 +70,19 @@ public class DiskonController extends BaseController {
 		}
 	}
 
+	@PostMapping("/diskon/updateJpa")
+	public ResponseEntity<?> getUpdateJPADiskon(@RequestParam("diskonId") long id, @RequestParam("diskon") float diskon,
+			@RequestHeader("Authorization") String user) {
+		try {
+			String[] auth = authUser(user).split(":");
+			diskonService.updateJpa(id, diskon, auth[0], auth[1]);
+			return new ResponseEntity<>("Update successful", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Unsuccessful", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@PostMapping("/diskon/delete")
 	public ResponseEntity<?> getDelete(@RequestParam("diskonId") long id, @RequestHeader("Authorization") String user) {
 		try {

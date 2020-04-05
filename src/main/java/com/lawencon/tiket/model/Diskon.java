@@ -12,7 +12,7 @@ public class Diskon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long diskonId;
-	private int diskon;
+	private float diskon;
 
 	public Long getDiskonId() {
 		return diskonId;
@@ -22,11 +22,11 @@ public class Diskon {
 		this.diskonId = diskonId;
 	}
 
-	public int getDiskon() {
+	public float getDiskon() {
 		return diskon;
 	}
 
-	public void setDiskon(int diskon) {
+	public void setDiskon(float diskon) {
 		this.diskon = diskon;
 	}
 

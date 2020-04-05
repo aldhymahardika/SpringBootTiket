@@ -37,7 +37,7 @@ public class TransaksiServiceImpl implements TransaksiService {
 	}
 
 	@Override
-	public String insert(Transaksi transaksi, String username, String password) throws Exception {
+	public Transaksi insert(Transaksi transaksi, String username, String password) throws Exception {
 		try {
 			if (loginService.findByUsernameAndPassword(username, password) == false) {
 				return null;
@@ -57,6 +57,34 @@ public class TransaksiServiceImpl implements TransaksiService {
 				return null;
 			} else {
 				return transaksiDao.delete(id);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Transaksi> findByPelanggan(String username, String password) throws Exception {
+		try {
+			if (loginService.findByUsernameAndPassword(username, password) == false) {
+				return null;
+			} else {
+				return transaksiDao.findByPelanggan();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Transaksi> findByPelangganTotal(String username, String password) throws Exception {
+		try {
+			if (loginService.findByUsernameAndPassword(username, password) == false) {
+				return null;
+			} else {
+				return transaksiDao.findByPelangganTotal();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

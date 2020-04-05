@@ -20,9 +20,9 @@ public class PelangganDaoImpl extends BaseHibernate implements PelangganDao{
 	}
 
 	@Override
-	public String insert(Pelanggan pelanggan) throws Exception {
+	public Pelanggan insert(Pelanggan pelanggan) throws Exception {
 		em.persist(pelanggan);
-		return "Berhasil ditambahkan";
+		return pelanggan;
 	}
 
 	@Override
@@ -45,6 +45,11 @@ public class PelangganDaoImpl extends BaseHibernate implements PelangganDao{
 		pel.setPelangganId(id);
 		em.remove(pel);
 		return "Data berhasil dihapus";
+	}
+
+	@Override
+	public int updateJpa(long id, String nama) throws Exception {
+		return 0;
 	}
 
 }

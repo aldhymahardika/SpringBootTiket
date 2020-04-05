@@ -20,9 +20,9 @@ public class KendaraanDaoImpl extends BaseHibernate implements KendaraanDao{
 	}
 
 	@Override
-	public String insert(TipeKendaraan tipeKendaraan) throws Exception {
+	public TipeKendaraan insert(TipeKendaraan tipeKendaraan,String username, String password) throws Exception {
 		em.persist(tipeKendaraan);
-		return "Berhasil ditambahkan";
+		return tipeKendaraan;
 	}
 
 	@Override
@@ -43,6 +43,12 @@ public class KendaraanDaoImpl extends BaseHibernate implements KendaraanDao{
 		tipe = (TipeKendaraan) q.getSingleResult();
 		em.remove(tipe);
 		return "Data berhasil dihapus";
+	}
+
+	@Override
+	public int updateJpa(long id, int harga) throws Exception {
+		return 0;
+		
 	}
 
 }

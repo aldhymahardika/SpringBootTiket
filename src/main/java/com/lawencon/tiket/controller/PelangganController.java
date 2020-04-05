@@ -69,6 +69,19 @@ public class PelangganController extends BaseController{
 			return new ResponseEntity<>("Unsuccessful", HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping("/pelanggan/updateJpa")
+	public ResponseEntity<?> getUpdateJPAPelanggan(@RequestParam("pelangganId") long id, @RequestParam("nama") String nama,
+			@RequestHeader("Authorization") String user) {
+		try {
+			String[] auth = authUser(user).split(":");
+			pelangganService.updateJpa(id, nama, auth[0], auth[1]);
+			return new ResponseEntity<>("Update successful", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Unsuccessful", HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	@PostMapping("/pelanggan/delete")
 	public ResponseEntity<?> getDelete(@RequestParam("pelangganId") long id, @RequestHeader("Authorization") String user) {

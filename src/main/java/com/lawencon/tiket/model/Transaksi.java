@@ -18,8 +18,6 @@ public class Transaksi {
 	private String kotaAsal;
 	private String kotaTujuan;
 	private String tglBerangkat;
-	private int totalTiket;
-	private int totalHarga;
 
 	@ManyToOne
 	@JoinColumn(name = "pelangganId")
@@ -65,14 +63,6 @@ public class Transaksi {
 		this.tglBerangkat = tglBerangkat;
 	}
 
-	public int getTotalTiket() {
-		return totalTiket;
-	}
-
-	public void setTotalTiket(int totalTiket) {
-		this.totalTiket = totalTiket;
-	}
-
 	public Pelanggan getPelanggan() {
 		return pelanggan;
 	}
@@ -95,14 +85,6 @@ public class Transaksi {
 
 	public void setDiskon(Diskon diskon) {
 		this.diskon = diskon;
-	}
-
-	public int getTotalHarga() {
-		return totalHarga;
-	}
-
-	public void setTotalHarga(int totalHarga) {
-		this.totalHarga = totalHarga;
 	}
 
 }

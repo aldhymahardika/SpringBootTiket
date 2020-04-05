@@ -7,7 +7,7 @@ import com.lawencon.tiket.dao.LoginDao;
 import com.lawencon.tiket.model.LoginUser;
 
 @Repository("login_repo_jpa")
-public class LoginImpl implements LoginDao {
+public class LoginDaoImpl implements LoginDao {
 
 	@Autowired
 	private LoginRepo loginRepo;

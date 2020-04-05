@@ -32,7 +32,7 @@ public class TransaksiController extends BaseController{
 	}
 
 	@GetMapping("/transaksi")
-	public ResponseEntity<List<Transaksi>> getDiskon(@RequestHeader("Authorization") String user) {
+	public ResponseEntity<List<Transaksi>> getTransaksi(@RequestHeader("Authorization") String user) {
 		List<Transaksi> listTransaksi = new ArrayList<>();
 		try {
 			String[] auth = authUser(user).split(":");
@@ -43,9 +43,35 @@ public class TransaksiController extends BaseController{
 			return new ResponseEntity<>(listTransaksi, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/transaksi/pelanggan")
+	public ResponseEntity<List<Transaksi>> getTransaksiPelanggan(@RequestHeader("Authorization") String user) {
+		List<Transaksi> listTransaksi = new ArrayList<>();
+		try {
+			String[] auth = authUser(user).split(":");
+			listTransaksi = transaksiService.findByPelanggan(auth[0], auth[1]);
+			return new ResponseEntity<>(listTransaksi, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(listTransaksi, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/transaksi/total")
+	public ResponseEntity<List<Transaksi>> getTransaksiPelangganTotal(@RequestHeader("Authorization") String user) {
+		List<Transaksi> listTransaksi = new ArrayList<>();
+		try {
+			String[] auth = authUser(user).split(":");
+			listTransaksi = transaksiService.findByPelangganTotal(auth[0], auth[1]);
+			return new ResponseEntity<>(listTransaksi, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(listTransaksi, HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	@PostMapping("/transaksi/insert")
-	public ResponseEntity<?> getInsertDiskon(@RequestBody String content, @RequestHeader("Authorization") String user) {
+	public ResponseEntity<?> getInsertTransaksi(@RequestBody String content, @RequestHeader("Authorization") String user) {
 		try {
 			String[] auth = authUser(user).split(":");
 			Transaksi trans = new ObjectMapper().readValue(content, Transaksi.class);

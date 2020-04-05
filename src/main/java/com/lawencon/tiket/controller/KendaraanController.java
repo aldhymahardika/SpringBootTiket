@@ -49,8 +49,8 @@ public class KendaraanController extends BaseController {
 			@RequestHeader("Authorization") String user) {
 		try {
 			String[] auth = authUser(user).split(":");
-			TipeKendaraan diskon = new ObjectMapper().readValue(content, TipeKendaraan.class);
-			kendaraanService.insert(diskon, auth[0], auth[1]);
+			TipeKendaraan kendaraan = new ObjectMapper().readValue(content, TipeKendaraan.class);
+			kendaraanService.insert(kendaraan, auth[0], auth[1]);
 			return new ResponseEntity<>("Insert successful", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,6 +64,19 @@ public class KendaraanController extends BaseController {
 		try {
 			String[] auth = authUser(user).split(":");
 			kendaraanService.update(id, harga, auth[0], auth[1]);
+			return new ResponseEntity<>("Update successful", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Unsuccessful", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping("/jenis/updateJpa")
+	public ResponseEntity<?> getUpdateJPAKendaraan(@RequestParam("tipeId") long id, @RequestParam("harga") int harga,
+			@RequestHeader("Authorization") String user) {
+		try {
+			String[] auth = authUser(user).split(":");
+			kendaraanService.updateJpa(id, harga, auth[0], auth[1]);
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

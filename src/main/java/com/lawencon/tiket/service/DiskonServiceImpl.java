@@ -37,7 +37,7 @@ public class DiskonServiceImpl implements DiskonService {
 	}
 
 	@Override
-	public String insert(Diskon diskon, String username, String password) throws Exception {
+	public Diskon insert(Diskon diskon, String username, String password) throws Exception {
 		try {
 			if (loginService.findByUsernameAndPassword(username, password) == false) {
 				return null;
@@ -51,7 +51,7 @@ public class DiskonServiceImpl implements DiskonService {
 	}
 
 	@Override
-	public Diskon update(long id, int diskon, String username, String password) throws Exception {
+	public Diskon update(long id, float diskon, String username, String password) throws Exception {
 		try {
 			if (loginService.findByUsernameAndPassword(username, password) == false) {
 				return null;
@@ -75,6 +75,20 @@ public class DiskonServiceImpl implements DiskonService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	@Override
+	public int updateJpa(long id, float diskon, String username, String password) throws Exception {
+		try {
+			if (loginService.findByUsernameAndPassword(username, password) == false) {
+				return 0;
+			} else {
+				return diskonDao.updateJpa(id, diskon);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 

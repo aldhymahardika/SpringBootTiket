@@ -20,9 +20,9 @@ public class TransaksiDaoImpl extends BaseHibernate implements TransaksiDao {
 	}
 
 	@Override
-	public String insert(Transaksi transaksi) throws Exception {
+	public Transaksi insert(Transaksi transaksi) throws Exception {
 		em.persist(transaksi);
-		return "Berhasil ditambahkan";
+		return transaksi;
 	}
 
 	@Override
@@ -33,6 +33,32 @@ public class TransaksiDaoImpl extends BaseHibernate implements TransaksiDao {
 		trans = (Transaksi) q.getSingleResult();
 		em.remove(trans);
 		return "Data berhasil dihapus";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Transaksi> findByPelanggan() throws Exception {
+		Query q = em.createNativeQuery("select p.nama, t.kota_asal, t.kota_tujuan, t.tgl_berangkat,tp.jenis_kendaraan, tp.harga \r\n" + 
+				"from pelanggan p \r\n" + 
+				"join transaksi t on p.pelanggan_id = t.pelanggan_id \r\n" + 
+				"join diskon d on d.diskon_id = t.diskon_id\r\n" + 
+				"join tipe_kendaraan tp on tp.tipe_id = t.tipe_id;");
+		return q.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Transaksi> findByPelangganTotal() throws Exception {
+		Query q = em.createNativeQuery("select\r\n" + 
+				"p.nama, SUM(tp.harga) as total,\r\n" + 
+				"(tp.harga*(select d2.diskon from diskon d2 where d2.diskon_id = (select t2.diskon_id from transaksi t2))) as diskon,\r\n" + 
+				"(tp.harga-(tp.harga*(select d2.diskon from diskon d2 where d2.diskon_id = (select t2.diskon_id from transaksi t2)))) as harga\r\n" + 
+				"from pelanggan p\r\n" + 
+				"join transaksi t on t.pelanggan_id = p.pelanggan_id\r\n" + 
+				"join tipe_kendaraan tp on tp.tipe_id = t.tipe_id\r\n" + 
+				"join diskon d on d.diskon_id = t.diskon_id \r\n" + 
+				"group by p.pelanggan_id, tp.tipe_id;");
+		return q.getResultList();
 	}
 
 }

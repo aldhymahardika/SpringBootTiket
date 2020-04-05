@@ -18,7 +18,7 @@ public class KendaraanServiceImpl implements KendaraanService {
 	@Autowired
 	@Qualifier("tipe_repo_hibernate")
 	private KendaraanDao kendaraanDao;
-	
+
 	@Autowired
 	private LoginService loginService;
 
@@ -37,12 +37,12 @@ public class KendaraanServiceImpl implements KendaraanService {
 	}
 
 	@Override
-	public String insert(TipeKendaraan jenisKendaraan, String username, String password) throws Exception {
+	public TipeKendaraan insert(TipeKendaraan jenisKendaraan, String username, String password) throws Exception {
 		try {
 			if (loginService.findByUsernameAndPassword(username, password) == false) {
 				return null;
 			} else {
-				return kendaraanDao.insert(jenisKendaraan);
+				return kendaraanDao.insert(jenisKendaraan, username, password);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,6 +75,20 @@ public class KendaraanServiceImpl implements KendaraanService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	@Override
+	public int updateJpa(long id, int harga, String username, String password) throws Exception {
+		try {
+			if (loginService.findByUsernameAndPassword(username, password) == false) {
+				return 0;
+			} else {
+				return kendaraanDao.updateJpa(id, harga);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 

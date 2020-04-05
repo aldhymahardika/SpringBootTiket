@@ -20,13 +20,13 @@ public class DiskonDaoImpl extends BaseHibernate implements DiskonDao{
 	}
 
 	@Override
-	public String insert(Diskon diskon) throws Exception {
+	public Diskon insert(Diskon diskon) throws Exception {
 		em.persist(diskon);
-		return "Berhasil ditambahkan";
+		return diskon;
 	}
 
 	@Override
-	public Diskon update(long id, int diskon) throws Exception {
+	public Diskon update(long id, float diskon) throws Exception {
 		Query q = em.createQuery(" from Diskon where diskonId = :idParam");
 		q.setParameter("idParam", id);
 		Diskon dis = new Diskon();
@@ -44,6 +44,12 @@ public class DiskonDaoImpl extends BaseHibernate implements DiskonDao{
 		diskon = (Diskon) q.getSingleResult();
 		em.remove(diskon);
 		return "Data berhasil dihapus";
+	}
+
+	@Override
+	public int updateJpa(long id, float diskon) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
