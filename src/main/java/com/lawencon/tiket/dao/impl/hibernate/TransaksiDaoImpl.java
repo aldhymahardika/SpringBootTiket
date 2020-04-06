@@ -49,15 +49,15 @@ public class TransaksiDaoImpl extends BaseHibernate implements TransaksiDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Transaksi> findByPelangganTotal() throws Exception {
-		Query q = em.createNativeQuery("select\r\n" + 
+		Query q = em.createNativeQuery("select distinct \r\n" + 
 				"p.nama, SUM(tp.harga) as total,\r\n" + 
-				"(tp.harga*(select d2.diskon from diskon d2 where d2.diskon_id = (select t2.diskon_id from transaksi t2))) as diskon,\r\n" + 
-				"(tp.harga-(tp.harga*(select d2.diskon from diskon d2 where d2.diskon_id = (select t2.diskon_id from transaksi t2)))) as harga\r\n" + 
+				"(tp.harga*(select distinct d2.diskon from diskon d2 where d2.diskon_id = (select distinct t2.diskon_id from transaksi t2))) as diskon,\r\n" + 
+				"(tp.harga-(tp.harga*(select distinct d2.diskon from diskon d2 where d2.diskon_id = (select distinct t2.diskon_id from transaksi t2)))) as harga\r\n" + 
 				"from pelanggan p\r\n" + 
 				"join transaksi t on t.pelanggan_id = p.pelanggan_id\r\n" + 
 				"join tipe_kendaraan tp on tp.tipe_id = t.tipe_id\r\n" + 
 				"join diskon d on d.diskon_id = t.diskon_id \r\n" + 
-				"group by p.pelanggan_id, tp.tipe_id;");
+				"group by p.pelanggan_id, tp.tipe_id ;");
 		return q.getResultList();
 	}
 
