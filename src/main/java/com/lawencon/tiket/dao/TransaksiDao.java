@@ -2,7 +2,6 @@ package com.lawencon.tiket.dao;
 
 import java.util.List;
 
-import com.lawencon.tiket.model.Pelanggan;
 import com.lawencon.tiket.model.Transaksi;
 
 public interface TransaksiDao {

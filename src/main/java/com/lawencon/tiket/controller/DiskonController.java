@@ -1,7 +1,6 @@
 package com.lawencon.tiket.controller;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +13,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawencon.tiket.model.Diskon;
 import com.lawencon.tiket.service.DiskonService;
 
 @RestController
-public class DiskonController extends BaseController {
+public class DiskonController extends BaseController<Diskon> {
 
 	@Autowired
 	private DiskonService diskonService;
-
-	@Override
-	String authUser(String user) throws Exception {
-		byte[] decodeBytes = Base64.getDecoder().decode(user);
-		String decodeString = new String(decodeBytes);
-		return decodeString;
-	}
-
+	
 	@GetMapping("/diskon")
 	public ResponseEntity<List<Diskon>> getDiskon(@RequestHeader("Authorization") String user) {
 		List<Diskon> listDiskon = new ArrayList<>();
@@ -48,7 +39,7 @@ public class DiskonController extends BaseController {
 	public ResponseEntity<?> getInsertDiskon(@RequestBody String content, @RequestHeader("Authorization") String user) {
 		try {
 			String[] auth = authUser(user).split(":");
-			Diskon diskon = new ObjectMapper().readValue(content, Diskon.class);
+			Diskon diskon = readValue(content, Diskon.class);
 			diskonService.insert(diskon, auth[0], auth[1]);
 			return new ResponseEntity<>("Insert successful", HttpStatus.OK);
 		} catch (Exception e) {

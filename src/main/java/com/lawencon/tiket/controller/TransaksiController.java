@@ -1,7 +1,6 @@
 package com.lawencon.tiket.controller;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +13,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawencon.tiket.model.Transaksi;
 import com.lawencon.tiket.service.TransaksiService;
 
 @RestController
-public class TransaksiController extends BaseController{
+public class TransaksiController extends BaseController<Transaksi>{
 	
 	@Autowired
 	private TransaksiService transaksiService;
-	
-	@Override
-	String authUser(String user) throws Exception {
-		byte[] decodeBytes = Base64.getDecoder().decode(user);
-		String decodeString = new String(decodeBytes);
-		return decodeString;
-	}
 
 	@GetMapping("/transaksi")
 	public ResponseEntity<List<Transaksi>> getTransaksi(@RequestHeader("Authorization") String user) {
@@ -74,7 +65,7 @@ public class TransaksiController extends BaseController{
 	public ResponseEntity<?> getInsertTransaksi(@RequestBody String content, @RequestHeader("Authorization") String user) {
 		try {
 			String[] auth = authUser(user).split(":");
-			Transaksi trans = new ObjectMapper().readValue(content, Transaksi.class);
+			Transaksi trans = readValue(content, Transaksi.class);
 			transaksiService.insert(trans, auth[0], auth[1]);
 			return new ResponseEntity<>("Insert successful", HttpStatus.OK);
 		} catch (Exception e) {

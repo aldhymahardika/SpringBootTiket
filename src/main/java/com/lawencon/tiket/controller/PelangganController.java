@@ -1,7 +1,6 @@
 package com.lawencon.tiket.controller;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +13,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawencon.tiket.model.Pelanggan;
 import com.lawencon.tiket.service.PelangganService;
 
 @RestController
-public class PelangganController extends BaseController{
+public class PelangganController extends BaseController<Pelanggan>{
 	
 	@Autowired
 	private PelangganService pelangganService;
-	
-	@Override
-	String authUser(String user) throws Exception {
-		byte[] decodeBytes = Base64.getDecoder().decode(user);
-		String decodeString = new String(decodeBytes);
-		return decodeString;
-	}
 
 	@GetMapping("/pelanggan")
 	public ResponseEntity<List<Pelanggan>> getPelanggan(@RequestHeader("Authorization") String user) {
@@ -48,7 +39,7 @@ public class PelangganController extends BaseController{
 	public ResponseEntity<?> getInsertPelanggan(@RequestBody String content, @RequestHeader("Authorization") String user) {
 		try {
 			String[] auth = authUser(user).split(":");
-			Pelanggan customer = new ObjectMapper().readValue(content, Pelanggan.class);
+			Pelanggan customer = readValue(content, Pelanggan.class);
 			pelangganService.insert(customer, auth[0], auth[1]);
 			return new ResponseEntity<>("Insert successful", HttpStatus.OK);
 		} catch (Exception e) {
